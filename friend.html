@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遇见最好的你 - 吕岳专属留言板</title>
+    <style>
+        /* ================= 基础与背景 ================= */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --primary-color: #0072ff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ================= 顶部导航栏 ================= */
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0 15px;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a.active, .navbar a:hover {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 0 20px;
+        }
+
+        /* ================= 玻璃拟态卡片 ================= */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
+            text-align: center;
+            animation: floatUp 0.8s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================= 顶部照片区 ================= */
+        .photo-wrapper {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            padding: 8px;
+            background: linear-gradient(45deg, #84fab0 0%, #8fd3f4 100%);
+            box-shadow: 0 10px 20px rgba(143, 211, 244, 0.4);
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-wrapper:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        /* ================= 艺术字设计 ================= */
+        .art-name {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 10px 0 5px 0;
+            background: linear-gradient(120deg, #00c6ff 0%, #0072ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            letter-spacing: 4px;
+        }
+
+        .title-badge {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(253, 160, 133, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .art-title {
+            font-size: 1.8rem;
+            color: #2d3436;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .art-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #0072ff;
+            border-radius: 2px;
+        }
+
+        /* ================= 留言板区域 ================= */
+        .message-board {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .message-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 18px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border-left: 5px solid #8fd3f4;
+            transition: all 0.3s ease;
+        }
+
+        .message-box:hover {
+            transform: translateX(8px);
+            border-left-color: #0072ff;
+            box-shadow: 0 6px 20px rgba(0,114,255,0.1);
+        }
+
+        .nickname {
+            font-weight: bold;
+            color: #0072ff;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+
+        .nickname::before {
+            content: '💬 ';
+        }
+
+        .message-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* 新增留言的专属样式 */
+        .new-message-badge {
+            font-size: 0.8rem;
+            background: #ff7675;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+        <a href="friend.html" class="active">📜 盲盒留言墙</a>
+        <a href="leave_message.html">✏️ 匿名写留言</a>
+    </div>
+
+    <div class="container">
+        
+        <!-- 核心介绍卡片 -->
+        <div class="card">
+            <!-- 照片区域：精准定位本地图片路径 p/ly.jpg -->
+            <div class="photo-wrapper">
+                <img src="p/ly.jpg" alt="吕岳的照片" onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=Felix&backgroundColor=b6e3f4'">
+            </div>
+
+            <!-- 艺术字姓名与头衔 -->
+            <h1 class="art-name">吕岳</h1>
+            <!-- 修改为学风建设部主席 -->
+            <div class="title-badge">👑 学风建设部主席</div>
+            
+            <!-- 深度定制简介 -->
+            <p style="color: #636e72; font-size: 1.1rem; max-width: 700px; margin: 10px auto 0 auto; font-weight: 500; text-align: justify; text-align-last: center;">
+                他不仅是大学里运筹帷幄的学风建设部主席，更是嵌入式实验室里最铁的战友。从一起死磕开发板的底层硬件代码，到联手构思充满打击感的 2D 推箱子射击游戏，有他在的日常里，从来不缺搞定 Bug 的成就感与互怼开黑的欢乐。在这个充满无限可能的数字宇宙中，准备好迎接大家对你的“虎狼之词”了吗？
+            </p>
+        </div>
+
+        <!-- 朋友留言卡片 -->
+        <div class="card message-board">
+            <div style="text-align: center;">
+                <h2 class="art-title">朋友们的“虎狼之词”盲盒</h2>
+            </div>
+            
+            <!-- 给留言区加一个 ID，方便 JS 动态把新留言塞进去 -->
+            <div id="message-container">
+                
+                <div class="message-box">
+                    <div class="nickname">闪亮的屁灯 💡</div>
+                    <p class="message-text">你眼睛咋长这么大</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">炎龙铠甲</div>
+                    <p class="message-text">岳，其实我喜欢你</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">lybb</div>
+                    <p class="message-text">儿子，想我了吗，这么长时间没见了</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">ly的前女友</div>
+                    <p class="message-text">你还在想我嘛?</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">吕岳小迷妹</div>
+                    <p class="message-text">喜欢你很久了</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">我是ly的债主</div>
+                    <p class="message-text">ly欠钱不还，赶紧给我还钱</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">杨北北</div>
+                    <p class="message-text">请把水溶c都还给我 还有发我表情包出去等着挨收拾吧</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">天天视奸你</div>
+                    <p class="message-text">想我了吗吕越</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">发烧的老母鸡</div>
+                    <p class="message-text">吕岳走路别玩手机了！！爱你么么哒</p>
+                </div>
+
+                <div class="message-box">
+                    <div class="nickname">s</div>
+                    <p class="message-text">你真是m吗</p>
+                </div>
+            </div> <!-- 留言区容器结束 -->
+
+        </div>
+
+    </div>
+
+    <!-- 新增：读取本地存储留言的 JavaScript 代码 -->
+    <script>
+        window.onload = function() {
+            // 从浏览器本地缓存读取留言，如果没有就是空数组
+            let savedMessages = JSON.parse(localStorage.getItem('lyMessages')) || [];
+            let container = document.getElementById('message-container');
+
+            // 把最新写的留言追加到现有列表的最下面
+            savedMessages.forEach(function(msg) {
+                let newBox = document.createElement('div');
+                newBox.className = 'message-box';
+                newBox.innerHTML = `
+                    <div class="nickname">${msg.id} <span class="new-message-badge">新到来</span></div>
+                    <p class="message-text">${msg.content}</p>
+                `;
+                container.appendChild(newBox);
+            });
+        };
+    </script>
+</body>
+</html>
